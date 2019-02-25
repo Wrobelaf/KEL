@@ -1,0 +1,19 @@
+﻿Person := ENTITY(FLAT(UID=id, STRING fname, STRING mname, STRING lname, STRING sex,
+                      STRING bdate, INTEGER age, INTEGER income,
+                      STRING address1, STRING address2, STRING city, STRING state),
+                 MODEL(UID, name{fname, mname, lname}, sex, {bdate}, {age}, {income},address{address1, address2, city, state}));
+                 
+Vehicle := ENTITY(FLAT(UID=id, INTEGER myear, STRING make=name.make,
+                      STRING model=name.model, STRING body=name.body,
+                      STRING vin, INTEGER msrp, STRING purchasedate,
+                      INTEGER purchaseprice, INTEGER value),MODEL(*));
+Claim := ENTITY(FLAT(UID=id, INTEGER amount, STRING date, STRING totalled),MODEL(*));
+
+Owns := ASSOCIATION(FLAT(Person owner=owner, Vehicle veh=id));
+
+ClaimFor := ASSOCIATION(FLAT(Vehicle veh=vehid, Claim claim=id));
+
+
+USE KEL_tutorial.File_Person.Small.File( FLAT, Person );
+USE KEL_tutorial.File_Vehicle.Small.File(FLAT, Vehicle, Owns);
+USE KEL_tutorial.File_Claim.File(FLAT, Claim, ClaimFor);

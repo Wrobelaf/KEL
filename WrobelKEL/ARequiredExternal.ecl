@@ -1,0 +1,1 @@
+﻿EXPORT ARequiredExternal := 'Hello World!';

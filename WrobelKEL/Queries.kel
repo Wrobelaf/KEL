@@ -1,0 +1,22 @@
+﻿IMPORT WrobelKEL.Entities;
+QUERY: ShowAll <= Person, Vehicle, Claim, Owns, ClaimFor;
+
+FUNCTION: REGEXFIND(STRING SearchFor, STRING Source) <= ECL(REGEXFIND(SearchFor, Source, NOCASE)) RETURNS BOOLEAN;
+
+QUERY: ShowPersons(STRING p_lname) <= Person(REGEXFIND(p_lname, name.lname));
+QUERY: ShowNames <= Person{UID,name,Owns};
+
+QUERY: ShowNamesAndVehs <= Person{UID,name{fname,lname},Owns{veh.make}};
+QUERY: HighestIncome <= Person(income = income$^Max);
+QUERY: HighIncome <= Person(income > income$^Ave){UID,name.fname,name.lname,income,income$^Ave};
+
+QUERY: HighestIncome2 <= Person(income = income$Person:Max);
+QUERY: HighestMaleIncome <= Person(sex = 'M' AND income = income$Person(sex = 'M'):Max);
+
+QUERY: IncomeMoreThanMaxValueOfAnyToyotas <= Person(income > MAX(Vehicle(make = 'TOYOTA'), value));
+
+QUERY: Lowest5EarnersBySex <= Person(income <= income$GROUP{sex}:Rank(5));
+QUERY: MediansBySex <= Person{sex, M_income:=income$GROUP:Median,IQR_income:=income$GROUP:IQR, M_age:=age$GROUP:Median};
+
+
+
